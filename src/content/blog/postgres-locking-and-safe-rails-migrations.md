@@ -68,7 +68,7 @@ Schema changes are different. When Rails runs `add_column :widgets, :tag_ids, :i
 
 That definition isn't stored per row. It's stored once, in the system catalogs (`pg_attribute`, `pg_class`), and every row in the table is read according to it. There's no way to lock "half" of a definition: you can't have some queries reading the old column layout and some reading the new one at the same time. So Postgres locks the whole table.
 
-The [ALTER TABLE docs](https://www.postgresql.org/docs/current/sql-altertable.html) are blunt about it: "Note that the lock level required may differ for each subform. An `ACCESS EXCLUSIVE` lock is acquired unless explicitly noted." A handful of subforms take something weaker, but the default is the heaviest lock available, and `ADD COLUMN` takes the default.
+The [ALTER TABLE docs](https://www.postgresql.org/docs/current/sql-altertable.html) say: "Note that the lock level required may differ for each subform. An `ACCESS EXCLUSIVE` lock is acquired unless explicitly noted." A handful of subforms take something weaker, but the default is the heaviest lock available, and `ADD COLUMN` takes the default.
 
 `ACCESS EXCLUSIVE` is the strongest table-level lock Postgres has. The [explicit locking docs](https://www.postgresql.org/docs/current/explicit-locking.html) say it "conflicts with locks of all modes" and guarantees "the holder is the only transaction accessing the table in any way." Unlike every other lock mode, it also blocks plain `SELECT` queries: "Only an `ACCESS EXCLUSIVE` lock blocks a `SELECT` (without `FOR UPDATE/SHARE`) statement."
 
@@ -116,7 +116,7 @@ Multiply that by every request touching the table while the migration waits. The
 
 ## Does adding a column rewrite the whole table?
 
-This is where I had another misconception. I'd heard the usual warning: be careful with `ALTER TABLE`, because Postgres might rewrite the entire table. That's true for some operations, but not for every `ADD COLUMN`, and the [docs](https://www.postgresql.org/docs/current/sql-altertable.html) are precise about which is which:
+This is where I had another misconception. I'd heard the usual warning: be careful with `ALTER TABLE`, because Postgres might rewrite the entire table. That's true for some operations, but not for every `ADD COLUMN`. From the [docs](https://www.postgresql.org/docs/current/sql-altertable.html):
 
 > When a column is added with `ADD COLUMN` and a non-volatile `DEFAULT` is specified, the default value is evaluated at the time of the statement and the result stored in the table's metadata [...] making the `ALTER TABLE` very fast even on large tables. If no column constraints are specified, NULL is used as the `DEFAULT`. In neither case is a rewrite of the table required.
 
@@ -134,7 +134,7 @@ Note what isn't on the list of rewrite triggers: `NOT NULL`. I had absorbed the 
 
 How much a schema change hurts comes down to three things stacking: what the operation has to do, how big the table is, and how much traffic it gets while the lock is held. The operation is the part we just covered: Postgres either updates metadata, or it visits every row.
 
-Table size only matters for the second kind. Visiting every row takes longer the more rows a table has. A metadata-only change is close to instant no matter how big the table is, but a rewrite of a table with tens of millions of rows can take minutes, and the docs warn it "will temporarily require as much as double the disk space."
+Table size only matters for the second kind. Visiting every row takes longer the more rows a table has. A metadata-only change is close to instant no matter how big the table is, but a rewrite of a table with tens of millions of rows can take minutes, and the docs say it "will temporarily require as much as double the disk space."
 
 Traffic is the third factor, and it decides whether anyone notices. A lock held for two minutes on a table nobody queries is a non-event. A lock held for a fraction of a second on a busy table can still start a queue, for the reason we saw earlier.
 
@@ -156,7 +156,7 @@ An array column is one of those. The question you ask it isn't "which rows equal
 
 Okay, back to the story. The index type won't matter again; what does matter is that the migration builds an index on a busy table, and index builds have their own locking story.
 
-While a plain `CREATE INDEX` runs, reads keep working but writes wait. That's because it takes a [`SHARE` lock](https://www.postgresql.org/docs/current/explicit-locking.html), and `SHARE` conflicts with `ROW EXCLUSIVE`, the lock every write takes. The [CREATE INDEX docs](https://www.postgresql.org/docs/current/sql-createindex.html) put it plainly: "Other transactions can still read the table, but if they try to insert, update, or delete rows in the table they will block until the index build is finished."
+While a plain `CREATE INDEX` runs, reads keep working but writes wait. That's because it takes a [`SHARE` lock](https://www.postgresql.org/docs/current/explicit-locking.html), and `SHARE` conflicts with `ROW EXCLUSIVE`, the lock every write takes. The [CREATE INDEX docs](https://www.postgresql.org/docs/current/sql-createindex.html) say: "Other transactions can still read the table, but if they try to insert, update, or delete rows in the table they will block until the index build is finished."
 
 That's friendlier than `ACCESS EXCLUSIVE`, which blocks reads too, but it still means the table takes no writes for as long as the build runs. A busy table can't afford that.
 
@@ -263,5 +263,5 @@ And the habits that fall out of the answers:
 - Keep non-transactional migrations to one statement where possible. A column migration and an index migration as separate files each fail cleanly on their own.
 - Add `if_not_exists` / `if_exists` to `add_column` and `remove_column` in any migration that isn't transactional.
 - Check for invalid indexes after any deploy where a concurrent build didn't obviously succeed.
-- Set a `lock_timeout` for migration statements. It defaults to `0`, meaning wait forever, and a migration waiting forever is the thing that builds a queue in the middle of production traffic. Failing fast and retrying later is safer. The docs note that if `statement_timeout` is also set and is lower, it fires first and makes `lock_timeout` pointless.
+- Set a `lock_timeout` for migration statements. It defaults to `0`, meaning wait forever, and a migration waiting forever is the thing that builds a queue in the middle of production traffic. Failing fast and retrying later is safer. The docs say that if `statement_timeout` is also set and is lower, it fires first and makes `lock_timeout` pointless.
 - Keep schema changes and data backfills in separate migrations, and run anything touching a busy table during a quieter window.

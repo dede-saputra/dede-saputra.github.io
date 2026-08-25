@@ -107,4 +107,5 @@ Each one is a reason a post reads as machine written:
 - Aphoristic closers: "Every other lock mode lets plain reads through. This one doesn't."
 - Negation pairs used for rhythm: "It isn't caution, it's that...", "None of this is X, and none of it is Y".
 - Filler intensifiers: genuinely, simply, actually, really, exactly, comprehensive, crucial. Delete unless the word is load bearing.
+- Quote-introductions that perform: "the docs are blunt about it", "put it plainly", "are precise about which is which", "the docs warn". He writes "the docs say" or "From the docs:" and lets the quote speak.
 - Closing sections that reflect on why the post was worth writing, in the register of "None of this is obscure trivia, it's just invisible until it bites you". A closing section is expected, but it lists actions, not reflections.
