@@ -1,181 +1,883 @@
+```astro
 ---
 import Mono from "@/components/Mono.astro";
-import Pulse from "@/components/Pulse.astro";
 import Reveal from "@/components/Reveal.astro";
 import SectionHead from "@/components/SectionHead.astro";
 import Badge from "@/components/ui/Badge.astro";
 import Card from "@/components/ui/Card.astro";
 
-type Project = {
+type TestingMedia = {
+  type: "image" | "video";
+  src: string;
+  label: string;
+};
+
+type ProjectMedia = {
+  type: "image";
+  src: string;
+  label: string;
+};
+
+type ProjectSection = {
   id: string;
+  stepNumber: string;
   year: string;
-  title: string;
-  blurb: string;
-  stack: string[];
+  title?: string;
+  blurb?: string;
+  paragraphs?: string[];
+  stack?: string[];
   href?: string;
   repo?: string;
+  image?: string;
+  videos?: string[];
+  projectMedia?: ProjectMedia[];
+  testingMedia?: TestingMedia[];
   state: string[];
   featured?: boolean;
 };
 
-const PROJECTS: Project[] = [
+type TechnologyGroup = {
+  category: string;
+  items: string[];
+};
+
+const TECHNOLOGY_STACK: TechnologyGroup[] = [
   {
-    id: "ilamy",
-    year: "2026",
-    title: "Ilamy Calendar",
-    blurb:
-      "Open-source React calendar library, now rebuilt around a tiny ~13 KB gzipped core and an opt-in plugin ecosystem, so you only ship what you use. RFC 5545 recurring events, resource scheduling, drag-and-drop, timezones, and 100+ locales. Published on npm as @ilamy/calendar.",
-    stack: ["React", "TypeScript", "Tailwind CSS 4", "dnd-kit", "Motion"],
-    href: "https://ilamy.dev",
-    repo: "https://github.com/kcsujeet/ilamy-calendar",
-    state: ["Live", "Open Source"],
+    category: "DEEP LEARNING & COMPUTER VISION",
+    items: [
+      "Pretrained CNN",
+      "Face Recognition",
+      "MediaPipe FaceMesh",
+      "Eye Aspect Ratio (EAR)",
+    ],
+  },
+  {
+    category: "GPU ACCELERATION",
+    items: [
+      "NVIDIA RTX 2060",
+      "CUDA",
+      "OpenCV CUDA",
+    ],
+  },
+  {
+    category: "EMBEDDED & IoT",
+    items: [
+      "ESP32",
+      "MQTT",
+      "Eclipse Mosquitto",
+    ],
+  },
+  {
+    category: "SENSORS & ACTUATORS",
+    items: [
+      "PIR HC-SR501",
+      "Ultrasonic HC-SR04",
+      "Magnetic Door Switch",
+      "Relay",
+      "Solenoid Door Lock",
+    ],
+  },
+  {
+    category: "OPERATING SYSTEM",
+    items: [
+      "Ubuntu Linux",
+    ],
+  },
+  {
+    category: "DEVELOPMENT & CAMERA",
+    items: [
+      "Python",
+      "OpenCV",
+      "Arducam IMX179",
+    ],
+  },
+];
+
+const BTS_PROJECT_SECTIONS: ProjectSection[] = [
+  {
+    id: "01-overview",
+    stepNumber: "01 — OVERVIEW",
+    year: "2025",
+
+    title:
+      "Design of a BTS Shelter Security System Based on Pretrained CNN Face Recognition with NVIDIA CUDA Optimization Integrated with the MQTT Protocol",
+
+    paragraphs: [
+      "Designed and implemented an AI-based BTS Shelter Security System that combines facial recognition, liveness detection, IoT sensors, and MQTT communication to provide automated and secure access control for BTS shelters.",
+
+      "The system uses a camera to capture facial images, a pretrained CNN model for identity recognition, and eye-blink detection to verify that the detected face belongs to a live person rather than a static photo.",
+    ],
+
+    stack: [
+      "Python",
+      "OpenCV",
+      "Deep Learning",
+      "Face Recognition",
+      "Anti-Spoofing",
+      "NVIDIA CUDA",
+      "Ubuntu Linux",
+    ],
+
+    videos: ["/videos/introduction.mp4"],
+
+    state: ["Final Assignment Project"],
     featured: true,
   },
+
   {
-    id: "sublimeread",
-    year: "2026",
-    title: "SublimeRead",
-    blurb:
-      "An Ai reading app that narrates your EPUBs and PDFs in natural-sounding voices.",
-    stack: ["Astro", "React", "TypeScript", "Cloudflare", "WASM"],
-    href: "https://sublimeread.com",
-    state: ["Live"],
+    id: "02-challenge",
+    stepNumber: "02 — CHALLENGE",
+    year: "2025",
+
+    paragraphs: [
+      "BTS shelters are often located in remote areas and may not have continuous on-site supervision. This creates a need for an automated security system capable of identifying authorized personnel while minimizing unauthorized access and false authentication.",
+
+      "The main challenge was to achieve reliable face recognition with sufficiently fast processing for real-time operation, while also preventing simple photo-based spoofing attacks.",
+    ],
+
+    /*
+     * CHALLENGE IMAGE
+     */
+    image: "/images/case.jpg",
+
+    state: ["Problem Statement"],
     featured: true,
   },
+
   {
-    id: "interactive-rails",
-    year: "2026",
-    title: "Interactive Rails",
-    blurb:
-      "Learn Rails 8 by building an e-commerce marketplace through 58 interactive levels across 7 acts. Free, open source, and runs entirely in your browser.",
-    stack: ["Astro", "React", "TypeScript", "Tailwind CSS 4", "Cloudflare"],
-    href: "https://interactive-rails.sujeetkc45.workers.dev",
-    repo: "https://github.com/kcsujeet/interactive-rails",
-    state: ["Live", "Open Source"],
+    id: "03-approach",
+    stepNumber: "03 — APPROACH",
+    year: "2025",
+
+    paragraphs: [
+      "The system combines several technologies into a single access-control workflow. A pretrained CNN is used for facial feature extraction and recognition, while MediaPipe FaceMesh with Eye Aspect Ratio (EAR) is implemented for liveness verification through eye-blink detection.",
+
+      "To improve real-time performance, the computer vision processing is accelerated using an NVIDIA RTX 2060 GPU with CUDA. Sensor data and access-control commands are then integrated through MQTT between the local processing server and ESP32 controller.",
+    ],
+
+    /*
+     * APPROACH IMAGES
+     */
+    projectMedia: [
+      {
+        type: "image",
+        src: "/images/ear.jpg",
+        label: "Eye Aspect Ratio (EAR)",
+      },
+      {
+        type: "image",
+        src: "/images/opencv.jpg",
+        label: "OpenCV CUDA",
+      },
+    ],
+
+    state: ["Engineering Solution"],
+    featured: true,
   },
+
   {
-    id: "testoise",
-    year: "2026",
-    title: "Testoise",
-    blurb:
-      "Lightweight, fully type-safe lazy test variables for Bun, Vitest, Jest, and Node. Inspired by RSpec.",
-    stack: ["TypeScript", "Bun", "Vitest", "Jest"],
-    repo: "https://github.com/kcsujeet/testoise",
-    state: ["Open Source"],
+    id: "04-architecture",
+    stepNumber: "04 — ARCHITECTURE",
+    year: "2025",
+
+    paragraphs: [
+      "The architecture integrates a CNN-based facial recognition pipeline with an ESP32 IoT node. The visual processing pipeline converts raw BGR inputs to RGB, extracts spatial feature vectors using convolutional and pooling layers, and performs face matching against a database.",
+    ],
+
+    /*
+     * ARCHITECTURE IMAGES
+     */
+    projectMedia: [
+      {
+        type: "image",
+        src: "/images/block_diagram.jpg",
+        label: "Block Diagram",
+      },
+      {
+        type: "image",
+        src: "/images/schematic.jpg",
+        label: "Schematic",
+      },
+    ],
+
+    state: ["System Design"],
+    featured: true,
   },
+
   {
-    id: "collage",
-    year: "2026",
-    title: "Collage Pen",
-    blurb:
-      "Browser-based collage maker designed to feel like a native desktop app. Custom Canvas with gesture interactions and high-resolution export.",
-    stack: ["Astro", "React", "TypeScript", "Canvas API"],
-    href: "https://collagepen.com",
-    state: ["Live"],
+    id: "05-technology",
+    stepNumber: "05 — TECHNOLOGY",
+    year: "2025",
+
+    paragraphs: [
+      "The technology stack is organized across Deep Learning, GPU acceleration, embedded IoT, hardware interfaces, operating system, and development tools used throughout the system.",
+
+      "These technologies were selected to support real-time facial recognition, liveness detection, GPU-accelerated processing, hardware integration, and reliable communication between the local processing server and field devices.",
+    ],
+
+    state: ["Tech Stack"],
+    featured: true,
   },
+
   {
-    id: "debackground",
-    year: "2026",
-    title: "Debackground",
-    blurb:
-      "Privacy-first AI background remover that runs entirely in the browser. Transformers.js and WASM. No uploads, no waiting, everything happens locally.",
-    stack: ["Transformers.js", "WASM", "TypeScript", "React"],
-    href: "https://debackground.com",
-    state: ["Live"],
+    id: "06-implementation",
+    stepNumber: "06 — IMPLEMENTATION",
+    year: "2025",
+
+    paragraphs: [
+      "Implemented the complete security workflow, starting from camera-based face acquisition and CNN-based identity recognition to liveness verification and automated door control.",
+
+      "CUDA acceleration was applied to the computer vision processing pipeline to reduce computational latency. The ESP32 handles sensor monitoring and receives authentication commands through MQTT to control the relay and solenoid door lock.",
+    ],
+
+    projectMedia: [
+      {
+        type: "image",
+        src: "/images/implementation.jpg",
+        label: "Implementation",
+      },
+      {
+        type: "image",
+        src: "/images/specific.jpg",
+        label: "Specifications",
+      },
+    ],
+
+    state: ["Prototype Build"],
+    featured: true,
+  },
+
+  {
+    id: "07-testing-results",
+    stepNumber: "07 — TESTING & RESULTS",
+    year: "2025",
+
+    /*
+     * NARASI TESTING & RESULTS
+     */
+    paragraphs: [
+      "The system underwent performance and functional testing to evaluate the effectiveness of NVIDIA CUDA acceleration and the reliability of the authentication workflow. Testing compared real-time face recognition performance with and without CUDA support, validated eye-blink-based liveness detection against simple photo spoofing attempts, and measured response delays before and after CUDA core optimization.",
+    ],
+
+    /*
+     * TESTING MEDIA
+     *
+     * type: "image" → untuk gambar / screenshot / grafik
+     * type: "video" → untuk video
+     */
+    testingMedia: [
+      {
+        type: "video",
+        src: "/videos/performance-without-cuda-support.mp4",
+        label: "Performance Face Recognition Without CUDA Support",
+      },
+
+      {
+        type: "video",
+        src: "/videos/performance-with-cuda-support.mp4",
+        label: "Performance Face Recognition With CUDA Support",
+      },
+
+      {
+        type: "image",
+        src: "/images/vrf.jpg",
+        label: "Liveness Detection Verification Process",
+      },
+
+      {
+        type: "image",
+        src: "/images/result-vrf.jpg",
+        label: "Liveness Detection Verification Result",
+      },
+
+      {
+        type: "image",
+        src: "/images/dl-no-cuda.png",
+        label: "Response Delay Without CUDA Core Optimization",
+      },
+
+      {
+        type: "image",
+        src: "/images/dl-cuda.png",
+        label: "Response Delay With CUDA Core Optimization",
+      },
+    ],
+
+    state: ["Validation & Results"],
+    featured: true,
   },
 ];
 ---
 
-<section data-screen-label="04 Projects">
-  <SectionHead n="04." label="Personal Projects" anchor="projects">
+<section data-screen-label="03 Projects">
+  <SectionHead n="03." label="ACADEMIC PROJECTS" anchor="projects">
     <p>
-      A curated selection of engineering projects, from open-source libraries to complex web architectures.
+      Academic engineering portfolio highlighting two core projects: a CUDA-accelerated Computer Vision pipeline for my 
+      <span class="text-white"> Final Assignment</span>, and a hybrid-powered automated fire suppression system for <span class="text-white">Capstone Design</span>.
     </p>
   </SectionHead>
 
-  <div class="grid md:grid-cols-2 gap-3 mt-4 md:auto-rows-fr">
+  <!-- MAIN GRID LAYOUT -->
+  <div class="grid md:grid-cols-1 gap-6 mt-6">
     {
-      PROJECTS.map((item, i) => {
-        const featured = item.featured ?? false;
-        const wrapperClass = ["h-full", featured && "md:col-span-2"]
-          .filter(Boolean)
-          .join(" ");
+      BTS_PROJECT_SECTIONS.map((item, i) => {
         return (
-          <Reveal delay={i * 50} class={wrapperClass}>
+          <Reveal delay={i * 50}>
             <Card
-              as="a"
-              href={item.href || item.repo}
-              target="_blank"
-              rel="noopener noreferrer"
               hover
-              glow={featured ? "top-left" : "right"}
-              padding={featured ? "lg" : "md"}
+              glow="top-left"
+              padding="lg"
               class="h-full flex flex-col"
               contentClass="flex-1 flex flex-col"
             >
-              <div class="flex items-start justify-between gap-6">
-                <div class="flex items-center gap-3 flex-wrap">
-                  <Mono class="text-muted-foreground">{item.year}</Mono>
-                  <span class="block w-3 h-px bg-foreground/15" />
-                  {item.state.map((s) => (
-                    <span class="inline-flex items-center gap-1.5">
-                      {s === "Live" && <Pulse />}
-                      <Mono
-                        class={
-                          s === "Live"
-                            ? "text-primary"
-                            : "text-muted-foreground"
-                        }
-                      >
-                        {s}
-                      </Mono>
-                    </span>
-                  ))}
+
+              {/* =====================================================
+                  MAIN TITLE (FINAL ASSIGNMENT)
+              ====================================================== */}
+              {item.id === "01-overview" && (
+                <div class="mb-3">
+                  <Mono class="text-xl md:text-2xl font-bold tracking-[0.2em] text-primary uppercase">
+                    FINAL ASSIGNMENT
+                  </Mono>
                 </div>
-                <span class="shrink-0 text-foreground/30 group-hover:text-primary group-hover:translate-x-1 transition-all">
-                  ↗
-                </span>
+              )}
+
+              {/* =====================================================
+                  HEADER NOMOR SECTION
+              ====================================================== */}
+              <div class="mb-6 flex items-center gap-3">
+                <Mono class="text-sm md:text-base font-bold tracking-wider text-primary uppercase">
+                  {item.stepNumber}
+                </Mono>
+
+                <span class="h-px flex-1 bg-primary/20" />
               </div>
-              <h3
-                class:list={[
-                  "mt-4 text-white tracking-tight",
-                  featured ? "text-2xl md:text-3xl" : "text-xl",
-                ]}
-              >
-                {item.title}
-              </h3>
-              <p
-                class:list={[
-                  "mt-2 text-foreground/65 max-w-prose",
-                  featured ? "text-base" : "text-sm",
-                ]}
-              >
-                {item.blurb}
-              </p>
-              <div class="mt-auto pt-6 flex flex-wrap gap-x-3 gap-y-2">
-                {item.stack.map((s) => <Badge>{s}</Badge>)}
-              </div>
+
+
+              {/* =====================================================
+                  SECTION 07 — TESTING & RESULTS
+              ====================================================== */}
+              {
+                item.id === "07-testing-results" && (
+                  <>
+                    {/* TESTING NARRATIVE */}
+                    {
+                      item.paragraphs &&
+                      item.paragraphs.length > 0 && (
+                        <div class="mb-10 max-w-4xl">
+                          <div class="text-base text-foreground/75 leading-relaxed">
+                            {
+                              item.paragraphs.map((paragraph) => {
+                                const highlight =
+                                  "performance with and without CUDA support";
+
+                                const parts = paragraph.split(highlight);
+
+                                return (
+                                  <p>
+                                    {parts[0]}
+                                    <span class="text-white font-semibold">
+                                      {highlight}
+                                    </span>
+                                    {parts[1]}
+                                  </p>
+                                );
+                              })
+                            }
+                          </div>
+                        </div>
+                      )
+                    }
+
+
+                    {/* TESTING MEDIA GRID */}
+                    {
+                      item.testingMedia &&
+                      item.testingMedia.length > 0 && (
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-14">
+
+                          {
+                            item.testingMedia.map((media) => (
+                              <div class="flex flex-col">
+
+                                {/* VIDEO */}
+                                {
+                                  media.type === "video" && (
+                                    <div class="overflow-hidden border-2 border-primary/60 bg-black">
+                                      <div class="aspect-[16/9] w-full">
+                                        <video
+                                          src={media.src}
+                                          controls
+                                          muted
+                                          playsinline
+                                          preload="metadata"
+                                          class="w-full h-full object-contain"
+                                        >
+                                          Your browser does not support the video tag.
+                                        </video>
+                                      </div>
+                                    </div>
+                                  )
+                                }
+
+
+                                {/* IMAGE */}
+                                {
+                                  media.type === "image" && (
+                                    <a
+                                      href={media.src}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      class="block overflow-hidden border-2 border-primary/60 bg-foreground/[0.025] transition-all duration-300 hover:border-primary hover:bg-primary/[0.025]"
+                                      aria-label={`View ${media.label} full size`}
+                                    >
+                                      <div class="aspect-[16/9] w-full">
+                                        <img
+                                          src={media.src}
+                                          alt={media.label}
+                                          class="h-full w-full object-contain object-center transition-transform duration-500 hover:scale-[1.01]"
+                                          loading="lazy"
+                                        />
+                                      </div>
+                                    </a>
+                                  )
+                                }
+
+
+                                {/* MEDIA LABEL */}
+                                <p class="mt-5 text-center text-sm md:text-base tracking-wide text-foreground/80">
+                                  {media.label}
+                                </p>
+
+                              </div>
+                            ))
+                          }
+
+                        </div>
+                      )
+                    }
+                  </>
+                )
+              }
+
+
+              {/* =====================================================
+                  SECTION SELAIN 07
+              ====================================================== */}
+              {
+                item.id !== "07-testing-results" && (
+                  <>
+
+                    {/* =================================================
+                        FINAL ASSIGNMENT VIDEO
+                    ================================================== */}
+                    {
+                      item.videos &&
+                      item.videos.length > 0 && (
+                        <div class="mb-6 space-y-4">
+                          {
+                            item.videos.map((video) => (
+                              <div class="overflow-hidden rounded-sm border border-foreground/10 bg-black">
+                                <video
+                                  src={video}
+                                  controls
+                                  muted
+                                  playsinline
+                                  preload="metadata"
+                                  class="w-full h-auto max-h-[500px] object-contain"
+                                >
+                                  Your browser does not support the video tag.
+                                </video>
+                              </div>
+                            ))
+                          }
+                        </div>
+                      )
+                    }
+
+
+                    {/* PROJECT IMAGE / DIAGRAM */}
+                    {
+                      item.image && (
+                        <a
+                          href={item.image}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="mb-6 block overflow-hidden rounded-sm border border-foreground/10 bg-foreground/5"
+                          aria-label={`View ${item.title || item.stepNumber} image full size`}
+                        >
+                          <img
+                            src={item.image}
+                            alt={item.title || item.stepNumber}
+                            class="w-full h-64 md:h-96 object-contain object-center transition-transform duration-500 hover:scale-[1.01]"
+                            loading="lazy"
+                          />
+                        </a>
+                      )
+                    }
+
+
+                    {/* PROJECT MEDIA GRID — APPROACH / ARCHITECTURE / IMPLEMENTATION */}
+                    {
+                      item.projectMedia &&
+                      item.projectMedia.length > 0 && (
+                        <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {
+                            item.projectMedia.map((media) => (
+                              <div class="flex flex-col">
+                                <a
+                                  href={media.src}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  class="block overflow-hidden rounded-sm border border-foreground/10 bg-foreground/5"
+                                  aria-label={`View ${media.label} full size`}
+                                >
+                                  <div class="aspect-[16/9] w-full">
+                                    <img
+                                      src={media.src}
+                                      alt={media.label}
+                                      class="w-full h-full object-contain object-center transition-transform duration-500 hover:scale-[1.01]"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                </a>
+
+                                <p class="mt-4 text-center text-sm md:text-base tracking-wide text-foreground/80">
+                                  {media.label}
+                                </p>
+                              </div>
+                            ))
+                          }
+                        </div>
+                      )
+                    }
+
+
+                    {/* CARD META HEADER */}
+                    {
+                      item.id !== "01-overview" && (
+                        <div class="flex items-start justify-between gap-6">
+                          <div class="flex items-center gap-3 flex-wrap">
+
+                            <Mono class="text-muted-foreground">
+                              {item.year}
+                            </Mono>
+
+                            <span class="block w-3 h-px bg-foreground/15" />
+
+                            {
+                              item.state.map((s) => (
+                                <span class="inline-flex items-center gap-1.5">
+                                  <Mono class="text-primary">
+                                    {s}
+                                  </Mono>
+                                </span>
+                              ))
+                            }
+
+                          </div>
+
+
+                          {/* EXTERNAL LINK ICON */}
+                          {
+                            (item.href || item.repo) && (
+                              <a
+                                href={item.href || item.repo}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="shrink-0 text-foreground/30 hover:text-primary hover:translate-x-1 transition-all"
+                                aria-label={`Open ${item.title || item.stepNumber}`}
+                              >
+                                ↗
+                              </a>
+                            )
+                          }
+                        </div>
+                      )
+                    }
+
+
+                    {/* TITLE */}
+                    {
+                      item.title && (
+                        <h3 class="mt-4 text-2xl md:text-3xl text-white tracking-tight font-semibold">
+                          {item.title}
+                        </h3>
+                      )
+                    }
+
+
+                    {/* DESCRIPTION */}
+                    {
+                      item.paragraphs &&
+                      item.paragraphs.length > 0 ? (
+                        <div class="mt-3 text-base text-foreground/75 leading-relaxed max-w-prose space-y-4">
+                          {
+                            item.paragraphs.map((paragraph) => (
+                              <p>{paragraph}</p>
+                            ))
+                          }
+                        </div>
+                      ) : item.blurb ? (
+                        <div class="mt-3 text-base text-foreground/75 leading-relaxed max-w-prose">
+                          <p>{item.blurb}</p>
+                        </div>
+                      ) : null
+                    }
+
+
+                    {/* OVERVIEW STACK */}
+                    {
+                      item.id === "01-overview" &&
+                      item.stack &&
+                      item.stack.length > 0 && (
+                        <div class="mt-auto pt-6 flex flex-wrap gap-x-3 gap-y-2">
+                          {
+                            item.stack.map((s) => (
+                              <Badge>{s}</Badge>
+                            ))
+                          }
+                        </div>
+                      )
+                    }
+
+
+                    {/* TECHNOLOGY STACK GRID */}
+                    {
+                      item.id === "05-technology" && (
+                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                          {
+                            TECHNOLOGY_STACK.map((group) => (
+                              <div class="group rounded-md border border-foreground/10 bg-foreground/[0.025] p-5 transition-all duration-300 hover:border-primary/30 hover:bg-primary/[0.025]">
+
+                                {/* CATEGORY HEADER */}
+                                <div class="mb-4 flex items-center gap-3">
+                                  <span class="h-px w-5 bg-primary/60" />
+
+                                  <Mono class="text-xs tracking-[0.16em] text-primary">
+                                    {group.category}
+                                  </Mono>
+                                </div>
+
+
+                                {/* STACK ITEMS */}
+                                <div class="flex flex-wrap gap-2">
+                                  {
+                                    group.items.map((tech) => (
+                                      <span class="inline-flex items-center rounded-sm border border-foreground/10 bg-background/40 px-3 py-1.5 text-xs md:text-sm text-foreground/75 transition-all duration-200 hover:border-primary/40 hover:text-white hover:bg-primary/5">
+                                        {tech}
+                                      </span>
+                                    ))
+                                  }
+                                </div>
+
+                              </div>
+                            ))
+                          }
+
+                        </div>
+                      )
+                    }
+
+                  </>
+                )
+              }
+
             </Card>
           </Reveal>
         );
       })
     }
-    <Reveal delay={PROJECTS.length * 50} class="h-full">
-      <a
-        href="https://github.com/kcsujeet"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group flex flex-col justify-center p-7 h-full border border-dashed border-foreground/15 rounded-sm hover:border-primary/50 transition-colors"
+  </div>
+
+
+  <!-- ================================================================
+       CAPSTONE DESIGN 
+       S1 ELECTRICAL ENGINEERING
+  ================================================================= -->
+
+  <div class="mt-6">
+    <Reveal delay={350}>
+      <Card
+        hover
+        glow="top-left"
+        padding="lg"
+        class="h-full flex flex-col"
+        contentClass="flex-1 flex flex-col"
       >
-        <Mono class="text-muted-foreground">EXPLORING MORE?</Mono>
-        <p class="mt-3 text-white text-lg md:text-xl">
-          Full project index on GitHub
-        </p>
-        <div class="mt-3 flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
-          <Mono>GITHUB.COM/KCSUJEET</Mono>
-          <span class="group-hover:translate-x-1 transition-transform">→</span>
+
+        {/* =====================================================
+            MAIN TITLE CAPSTONE DESIGN
+            UKURAN SAMA DENGAN FINAL ASSIGNMENT
+        ====================================================== */}
+        <div class="mb-3">
+          <Mono class="text-xl md:text-2xl font-bold tracking-[0.2em] text-primary uppercase">
+            CAPSTONE DESIGN
+          </Mono>
         </div>
-      </a>
+
+
+        {/* =====================================================
+            YOUTUBE DEMONSTRATION
+            POSISI SAMA SEPERTI VIDEO FINAL ASSIGNMENT
+        ====================================================== */}
+        <div class="mb-6 space-y-4">
+
+          <div class="overflow-hidden rounded-sm border border-foreground/10 bg-black">
+            <div class="aspect-video w-full">
+              <iframe
+                src="https://www.youtube.com/embed/LUxN46yapgM"
+                title="IoT-Based Fire Suppression System Demonstration"
+                class="w-full h-full"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+
+        </div>
+
+
+        {/* =====================================================
+            PROJECT META
+        ====================================================== */}
+        <div class="flex items-start justify-between gap-6">
+          <div class="flex items-center gap-3 flex-wrap">
+
+            <Mono class="text-muted-foreground">
+              2022
+            </Mono>
+
+            <span class="block w-3 h-px bg-foreground/15" />
+
+            <Mono class="text-primary">
+              Team Project
+            </Mono>
+
+          </div>
+
+          <Badge>
+            Electrical Engineering
+          </Badge>
+        </div>
+
+
+        {/* =====================================================
+            PROJECT TITLE
+        ====================================================== */}
+        <h3 class="mt-4 text-2xl md:text-3xl text-white tracking-tight font-semibold">
+          Design and Implementation of an IoT-Based Fire Suppression System Using Temperature and Smoke Sensors with Sprinkler Integration
+        </h3>
+
+
+        {/* INSTITUTION */}
+        <p class="mt-2 text-muted-foreground text-sm md:text-base font-medium">
+        </p>
+
+
+        {/* =====================================================
+            PROJECT DESCRIPTION
+        ====================================================== */}
+        <div class="mt-5 text-base text-foreground/75 leading-relaxed max-w-4xl">
+          <p>
+          This Capstone Design project was collaboratively developed as a team effort (Group IV) to design an IoT-based automated fire suppression system powered by a hybrid energy source (solar panel and wind turbine). Powered by a NodeMCU ESP8266 microcontroller connected to the Blynk platform, the system utilizes a combination of MQ-2 (gas/smoke), DHT11 (temperature/humidity), and Flame sensors to detect hazards in real time, deliver automated emergency notifications, and enable fire-extinguishing water pump activation both automatically and via remote control.
+          </p>
+        </div>
+
+
+        {/* PROJECT FUNCTIONS */}
+        <div class="mt-8 space-y-6">
+        </div>
+
+
+        {/* KEY TECHNOLOGIES */}
+        <div class="mt-8 pt-6 border-t border-foreground/10">
+
+          <Mono class="text-xs tracking-[0.16em] text-muted-foreground block mb-4">
+            KEY TECHNOLOGIES
+          </Mono>
+
+          <div class="flex flex-wrap gap-2">
+
+            <Badge>
+              hybrid energy 
+            </Badge>
+
+            <Badge>
+              Temperature Sensor
+            </Badge>
+
+            <Badge>
+              Smoke Sensor
+            </Badge>
+
+            <Badge>
+              Microcontroller
+            </Badge>
+
+            <Badge>
+              Sprinkler
+            </Badge>
+
+            <Badge>
+              Automated Control
+            </Badge>
+
+          </div>
+
+        </div>
+
+
+        {/* =====================================================
+            ACADEMIC CERTIFICATE
+            GRID STYLE — SAMA SEPERTI PROJECT MEDIA
+        ====================================================== */}
+        <div class="mt-8 pt-6 border-t border-foreground/10">
+
+          <div class="mb-4 flex items-center gap-3">
+            <span class="h-px w-5 bg-primary/60" />
+
+            <Mono class="text-xs tracking-[0.16em] text-primary">
+              ACADEMIC CERTIFICATE
+            </Mono>
+          </div>
+
+          {/* CERTIFICATE GRID */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div class="flex flex-col">
+
+              <a
+                href="/images/certificate.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block overflow-hidden rounded-sm border border-foreground/10 bg-foreground/5"
+                aria-label="View Capstone Design Project Certificate full size"
+              >
+                <div class="aspect-[16/9] w-full">
+                  <img
+                    src="/images/certificate.png"
+                    alt="Capstone Design Project Certificate — Design and Implementation of an IoT-Based Fire Suppression System"
+                    class="w-full h-full object-contain object-center transition-transform duration-500 hover:scale-[1.01]"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
+
+              <p class="mt-4 text-center text-sm md:text-base tracking-wide text-foreground/80">
+                Capstone Design — Universitas Trisakti
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </Card>
     </Reveal>
   </div>
+
 </section>

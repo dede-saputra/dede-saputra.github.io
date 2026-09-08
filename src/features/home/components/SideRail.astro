@@ -1,5 +1,8 @@
 ---
-// Lucide icon paths. viewBox 24, currentColor stroke.
+/*
+ * Section navigation configuration
+ * Each ID must match the ID of the corresponding section.
+ */
 const SECTIONS = [
   {
     id: "intro",
@@ -12,19 +15,14 @@ const SECTIONS = [
     icon: `<circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>`,
   },
   {
-    id: "experience",
-    label: "EXPERIENCE",
-    icon: `<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>`,
-  },
-  {
     id: "projects",
-    label: "PERSONAL PROJECTS",
+    label: "ACADEMIC PROJECTS",
     icon: `<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>`,
   },
   {
-    id: "writing",
-    label: "WRITING",
-    icon: `<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>`,
+    id: "academic",
+    label: "ACADEMIC HIGHLIGHTS",
+    icon: `<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>`,
   },
   {
     id: "contact",
@@ -34,7 +32,10 @@ const SECTIONS = [
 ];
 ---
 
-<!-- Desktop: fixed left vertical rail -->
+<!-- ========================================================= -->
+<!-- Desktop Navigation                                        -->
+<!-- ========================================================= -->
+
 <nav
   aria-label="Section navigation"
   class="hidden lg:flex fixed left-8 top-1/2 -translate-y-1/2 z-30 flex-col gap-1"
@@ -46,8 +47,26 @@ const SECTIONS = [
         data-rail-link={s.id}
         class="group flex items-center gap-3 py-2.5 pr-2"
       >
-        <span class="block h-px w-4 bg-foreground/30 group-hover:w-7 group-hover:bg-foreground/55 group-data-active:w-10 group-data-active:bg-primary group-data-active:group-hover:bg-primary transition-all duration-500" />
-        <span class="font-mono text-xs uppercase tracking-widest text-foreground/30 group-hover:text-foreground/80 group-data-active:text-primary group-data-active:group-hover:text-primary transition-colors">
+        <!-- Indicator line -->
+        <span
+          class="block h-px w-5 bg-foreground/30
+                 group-hover:w-8
+                 group-hover:bg-foreground/55
+                 group-data-active:w-11
+                 group-data-active:bg-primary
+                 group-data-active:group-hover:bg-primary
+                 transition-all duration-500"
+        />
+
+        <!-- Label (UKURAN FONT DIUBAH DARI text-xs MENJADI text-sm) -->
+        <span
+          class="font-mono text-sm uppercase tracking-widest
+                 text-foreground/30
+                 group-hover:text-foreground/80
+                 group-data-active:text-primary
+                 group-data-active:group-hover:text-primary
+                 transition-colors"
+        >
           0{i + 1}. {s.label}
         </span>
       </a>
@@ -55,10 +74,16 @@ const SECTIONS = [
   }
 </nav>
 
-<!-- Mobile/tablet: fixed bottom centered pill -->
+<!-- ========================================================= -->
+<!-- Mobile / Tablet Navigation                                -->
+<!-- ========================================================= -->
+
 <nav
   aria-label="Section navigation"
-  class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 p-1 bg-background/80 backdrop-blur-md border border-border rounded-full"
+  class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30
+         flex items-center gap-1 p-1
+         bg-background/80 backdrop-blur-md
+         border border-border rounded-full"
 >
   {
     SECTIONS.map((s) => (
@@ -66,7 +91,8 @@ const SECTIONS = [
         href={`#${s.id}`}
         data-rail-link={s.id}
         aria-label={s.label}
-        class="group inline-flex items-center justify-center w-8 h-8 rounded-full"
+        class="group inline-flex items-center justify-center
+               w-8 h-8 rounded-full"
       >
         <svg
           viewBox="0 0 24 24"
@@ -76,7 +102,11 @@ const SECTIONS = [
           stroke-linecap="round"
           stroke-linejoin="round"
           aria-hidden="true"
-          class="w-4 h-4 text-foreground/30 group-hover:text-foreground/80 group-data-active:text-primary transition-colors"
+          class="w-4 h-4
+                 text-foreground/30
+                 group-hover:text-foreground/80
+                 group-data-active:text-primary
+                 transition-colors"
           set:html={s.icon}
         />
       </a>
@@ -84,39 +114,60 @@ const SECTIONS = [
   }
 </nav>
 
+<!-- ========================================================= -->
+<!-- Active Section Detection                                  -->
+<!-- ========================================================= -->
+
 <script>
   const links =
     document.querySelectorAll<HTMLAnchorElement>("[data-rail-link]");
-  const sectionIds = new Set(
-    Array.from(links).map((l) => l.dataset.railLink ?? ""),
-  );
-  const sections = Array.from(sectionIds)
+
+  const sectionIds = Array.from(links)
+    .map((link) => link.dataset.railLink)
+    .filter((id): id is string => Boolean(id));
+
+  const sections = sectionIds
     .map((id) => document.getElementById(id))
-    .filter((el): el is HTMLElement => el !== null);
+    .filter((element): element is HTMLElement => element !== null);
 
   const setActive = (id: string) => {
-    links.forEach((l) => {
-      if (l.dataset.railLink === id) l.setAttribute("data-active", "");
-      else l.removeAttribute("data-active");
+    links.forEach((link) => {
+      if (link.dataset.railLink === id) {
+        link.setAttribute("data-active", "");
+      } else {
+        link.removeAttribute("data-active");
+      }
     });
   };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) setActive(entry.target.id);
+  const updateActiveSection = () => {
+    if (window.scrollY < 100) {
+      setActive("intro");
+      return;
+    }
+
+    const referencePoint = window.innerHeight * 0.4;
+    let activeSection = sections[0];
+
+    for (const section of sections) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= referencePoint) {
+        activeSection = section;
+      } else {
+        break;
       }
-    },
-    { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
-  );
+    }
 
-  sections.forEach((s) => observer.observe(s));
-
-  // Fallback: forcefully set intro active if at the very top of the page
-  const handleScroll = () => {
-    if (window.scrollY < 100) setActive("intro");
+    if (activeSection) {
+      setActive(activeSection.id);
+    }
   };
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  // Initial check
-  handleScroll();
+
+  window.addEventListener("scroll", updateActiveSection, {
+    passive: true,
+  });
+
+  window.addEventListener("resize", updateActiveSection);
+
+  updateActiveSection();
 </script>

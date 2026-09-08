@@ -1,4 +1,4 @@
-export const JOB_TITLE = "Senior Full-Stack Engineer";
-export const NAME = "Sujeet Kc";
-export const SITE_URL = "https://kcsujeet.com.np/";
-export const START_DATE = new Date("2019-02-01");
+export const JOB_TITLE = "Electrical Engineering";
+export const NAME = "Dede Saputra";
+export const SITE_URL = "https://dede-saputra.github.io/";
+export const START_DATE = new Date("2022-08-01");

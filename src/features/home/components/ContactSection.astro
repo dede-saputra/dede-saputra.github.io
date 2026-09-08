@@ -5,50 +5,76 @@ import SectionHead from "@/components/SectionHead.astro";
 import Card from "@/components/ui/Card.astro";
 
 const SOCIAL: ReadonlyArray<readonly [string, string, string]> = [
-  ["GITHUB", "github.com/kcsujeet", "https://github.com/kcsujeet"],
+  ["GITHUB", "github.com/dede-saputra", "https://github.com/dede-saputra"],
   [
     "LINKEDIN",
-    "linkedin.com/in/kc-sujeet",
-    "https://linkedin.com/in/kc-sujeet",
+    "in/dede-saputra",
+    "https://www.linkedin.com/in/dede-saputra-6b4686424/",
   ],
+  ["RESUME", "Download CV (PDF)", "/Dede-Saputra-Curriculum-Vitae.pdf"],
 ];
+
+const EMAIL = "saputradede@outlook.co.id";
 ---
 
-<section data-screen-label="06 Contact">
-  <SectionHead n="06." label="CONTACT" anchor="contact">
+<section id="contact" data-screen-label="05 Contact" class="py-20">
+  <SectionHead n="05." label="CONTACT" anchor="contact">
     <p>
-      I'm always interested in ambitious projects and thoughtful collaborations. If you're building something worth talking about, reach out.
+      I am currently open to new career opportunities and impactful collaborations. If your team is looking for a dedicated electrical engineer to bring value to your projects, I’d love to connect and discuss further.
     </p>
   </SectionHead>
 
   <div class="grid md:grid-cols-3 gap-3 mt-4">
+    {/* Kartu Utama Email */}
     <Card
       as="a"
-      href="mailto:sujeetkc45@gmail.com"
+      href={`mailto:${EMAIL}`}
       hover
       glow="top-left"
       padding="lg"
-      class="md:col-span-2"
+      class="md:col-span-2 group block cursor-pointer"
     >
       <Mono class="text-primary">EMAIL COMMUNICATION</Mono>
-      <p class="mt-4 text-white text-3xl md:text-5xl tracking-tight leading-tight break-all">
-        sujeetkc45@gmail.com
+      
+      <p class="mt-4 text-white text-xl md:text-4xl tracking-tight leading-tight break-all">
+        {EMAIL}
       </p>
-      <div class="mt-6 inline-flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
-        <Mono>WRITE A MESSAGE</Mono>
-        <span class="group-hover:translate-x-1 transition-transform">→</span>
+
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <button
+          type="button"
+          id="copy-email-btn"
+          data-email={EMAIL}
+          class="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+        >
+          <Mono id="copy-text">COPY EMAIL ADDRESS</Mono>
+          <span id="copy-icon"> </span>
+        </button>
+
+        <span class="text-muted-foreground/40 hidden sm:inline">|</span>
+
+        <div class="inline-flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
+          <Mono>OPEN MAIL APP</Mono>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </div>
       </div>
     </Card>
 
+    {/* Kartu Inquiry & Social Links */}
     <Card padding="lg">
       <Mono class="text-primary">INQUIRY STATUS</Mono>
+
       <div class="mt-4 flex items-center gap-2.5">
         <Pulse />
-        <span class="text-white text-base">Open to interesting work</span>
+        <span class="text-white text-sm md:text-base font-medium">
+          Open for Electrical Engineering Roles
+        </span>
       </div>
+
       <p class="mt-4 text-muted-foreground text-sm">
-        Expect a response within 24–48 business hours.
+       Thank you for reaching out. I aim to respond to all inquiries as quickly as possible.
       </p>
+
       <div class="mt-6 space-y-2">
         {
           SOCIAL.map(([k, v, h]) => (
@@ -56,10 +82,10 @@ const SOCIAL: ReadonlyArray<readonly [string, string, string]> = [
               href={h}
               target="_blank"
               rel="noopener noreferrer"
-              class="group flex items-baseline justify-between gap-3 py-1.5 border-b border-border hover:border-primary/40 transition-colors"
+              class="group grid grid-cols-3 items-baseline gap-2 py-1.5 border-b border-border hover:border-primary/40 transition-colors"
             >
-              <Mono class="text-muted-foreground">{k}</Mono>
-              <span class="text-foreground/80 text-xs group-hover:text-primary transition-colors">
+              <Mono class="text-muted-foreground col-span-1">{k}</Mono>
+              <span class="text-foreground/80 text-xs group-hover:text-primary transition-colors col-span-2 break-all">
                 {v}
               </span>
             </a>
@@ -69,3 +95,27 @@ const SOCIAL: ReadonlyArray<readonly [string, string, string]> = [
     </Card>
   </div>
 </section>
+
+<script>
+  const copyBtn = document.getElementById("copy-email-btn");
+  const copyText = document.getElementById("copy-text");
+
+  copyBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const email = copyBtn.getAttribute("data-email");
+    if (email) {
+      navigator.clipboard.writeText(email).then(() => {
+        if (copyText) {
+          const originalText = copyText.textContent;
+          copyText.textContent = "COPIED TO CLIPBOARD!";
+          
+          setTimeout(() => {
+            copyText.textContent = originalText;
+          }, 2000);
+        }
+      });
+    }
+  });
+</script>

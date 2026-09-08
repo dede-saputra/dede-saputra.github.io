@@ -1,0 +1,87 @@
+---
+import Mono from "@/components/Mono.astro";
+import Reveal from "@/components/Reveal.astro";
+import SectionHead from "@/components/SectionHead.astro";
+import Card from "@/components/ui/Card.astro";
+---
+
+<!-- PASTIKAN id="academic" TERTULIS DI SINI -->
+<section id="academic" data-screen-label="04 Academic Highlights" class="py-20">
+  <SectionHead n="04." label="ACADEMIC HIGHLIGHTS" anchor="academic" />
+
+  <!-- ACADEMIC PRESENTATION DOCUMENTATION -->
+  <div class="mt-8">
+    <Reveal delay={50}>
+      <Card
+        hover
+        padding="lg"
+        class="h-full"
+        contentClass="flex flex-col"
+      >
+        <!-- Presentation Documentation Grid -->
+        <div class="grid md:grid-cols-2 gap-4">
+
+          <!-- Documentation 01 -->
+          <a
+            href="/images/presentation.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block overflow-hidden rounded-md border border-foreground/10 aspect-[4/3] group"
+          >
+            <img
+              src="/images/presentation.png"
+              alt="Academic presentation of BTS Shelter Security System at Universitas Trisakti"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </a>
+
+          <!-- Documentation 02 -->
+          <a
+            href="/images/device.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block overflow-hidden rounded-md border border-foreground/10 aspect-[4/3] group"
+          >
+            <img
+              src="/images/device.png"
+              alt="BTS Shelter Security System demonstration at Universitas Trisakti"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </a>
+
+          <!-- Date & Presentation Label -->
+          <div class="md:col-span-2 mt-4 flex flex-col gap-2">
+
+            <div class="flex items-center gap-2">
+              <Mono class="text-xs text-muted-foreground tracking-[0.16em]">
+                23 August 2025
+              </Mono>
+
+              <span class="block w-3 h-px bg-foreground/15" />
+
+              <Mono class="text-xs text-primary tracking-[0.16em]">
+                PRESENTATION
+              </Mono>
+            </div>
+
+            <p class="text-sm md:text-base text-foreground/80 leading-relaxed">
+              Selected to demonstrate the Final Assignment
+              <span class="text-white font-medium"> Design of a BTS Shelter Security System Based on Pretrained CNN
+                Face Recognition with NVIDIA CUDA Optimization Integrated with
+                the MQTT Protocol
+              </span> at an academic exhibition organized by the Department of
+              Electrical Engineering, Universitas Trisakti, for new students
+              and their parents. The demonstration covered NVIDIA CUDA
+              acceleration on the RTX 2060, MQTT communication, MediaPipe,
+              anti-spoofing, and the operation of the integrated BTS shelter
+              security system.
+            </p>
+
+          </div>
+        </div>
+      </Card>
+    </Reveal>
+  </div>
+</section>
