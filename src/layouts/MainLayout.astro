@@ -118,6 +118,22 @@ const grainSvg = `url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns=
     <link rel="icon" type="image/svg+xml" href={logoUrl} sizes="any" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
+    <!-- Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-S67NTKG45L"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+
+      gtag("js", new Date());
+      gtag("config", "G-S67NTKG45L");
+    </script>
+
     <!-- JSON-LD Structured Data -->
     <script
       type="application/ld+json"
